@@ -52,3 +52,13 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           provenance: false
+
+      - name: Set package visibility to public
+        if: github.event_name != 'pull_request'
+        run: |
+          gh api -X PATCH \
+            "orgs/${{ github.repository_owner }}/packages/container/${{ env.IMAGE_NAME }}" \
+            -H "Accept: application/vnd.github+json" \
+            -f visibility=public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
