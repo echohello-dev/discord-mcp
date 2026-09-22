@@ -1,6 +1,6 @@
 {
   "name": "@echohello/discord-mcp",
-  "version": "0.1.0",
+  "version": "2026.09.22",
   "description": "Discord MCP server for Claude, Codex, OpenCode and other MCP clients. TypeScript, stdio transport, ~22 focused tools.",
   "type": "module",
   "main": "./dist/index.js",
