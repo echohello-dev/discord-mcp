@@ -56,9 +56,11 @@ jobs:
       - name: Set package visibility to public
         if: github.event_name != 'pull_request'
         run: |
+          PACKAGE_NAME="${IMAGE_NAME##*/}"
           gh api -X PATCH \
-            "orgs/${{ github.repository_owner }}/packages/container/${{ env.IMAGE_NAME }}" \
+            "orgs/${IMAGE_NAME%/*}/packages/container/${PACKAGE_NAME}" \
             -H "Accept: application/vnd.github+json" \
             -f visibility=public
         env:
+          IMAGE_NAME: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
