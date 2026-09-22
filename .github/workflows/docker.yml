@@ -55,32 +55,13 @@ jobs:
 
       - name: Set package visibility to public
         if: github.event_name != 'pull_request'
+        continue-on-error: true
         run: |
-          set -x
-          PACKAGE_NAME="${IMAGE_NAME##*/}"
-          ORG="${IMAGE_NAME%/*}"
-          for i in 1 2 3 4 5 6 7 8 9 10; do
-            STATUS=$(curl -s -o /tmp/resp.json -w "%{http_code}" \
-              -X PATCH \
-              -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/orgs/${ORG}/packages/container/${PACKAGE_NAME}" \
-              -d '{"visibility":"public"}')
-            if [ "$STATUS" = "200" ]; then
-              echo "package visibility set to public"
-              exit 0
-            fi
-            if [ "$STATUS" = "404" ]; then
-              echo "package not found yet (attempt $i/10), retrying in 10s"
-              sleep 10
-              continue
-            fi
-            echo "unexpected status $STATUS:"
-            cat /tmp/resp.json
-            exit 1
-          done
-          echo "timed out waiting for package to be created"
-          exit 1
+          curl -s -X PATCH \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/orgs/${IMAGE_NAME%/*}/packages/container/${IMAGE_NAME##*/}" \
+            -d '{"visibility":"public"}' >/dev/null
         env:
           IMAGE_NAME: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

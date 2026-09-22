@@ -90,6 +90,8 @@ MCP client configs:
 
 Images are tagged on every `v*.*.*` git tag (see [`.github/workflows/docker.yml`](.github/workflows/docker.yml)).
 
+> **Note on visibility:** The GHCR package defaults to private on first publish. Flip it to public once via the [package settings](https://github.com/orgs/echohello-dev/packages/container/discord-mcp/settings) — the workflow will keep it public on subsequent tags if your token has org admin scope.
+
 ## Configure your Discord bot
 
 1. Open https://discord.com/developers/applications and create an application.
