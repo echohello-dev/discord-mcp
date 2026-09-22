@@ -19,7 +19,8 @@ The Discord MCP ecosystem has Java servers, Python servers, and 100-tool kitchen
 - Forum channel support for posts and threads
 - Webhook send works without bot context (just a webhook URL)
 - Strict TypeScript, zero `any`, runtime input validation with `zod`
-- Single binary, single env var (`DISCORD_TOKEN`), no Docker
+- Single binary, single env var (`DISCORD_TOKEN`)
+- Optional container image at `ghcr.io/echohello-dev/discord-mcp` (multi-arch)
 
 ## Tools
 
@@ -64,6 +65,30 @@ Or run without installing:
 ```bash
 npx @echohello/discord-mcp
 ```
+
+### Docker
+
+Multi-arch image (`linux/amd64`, `linux/arm64`) at `ghcr.io/echohello-dev/discord-mcp`. The container speaks stdio, so wire it into any MCP client the same way you would the binary.
+
+```bash
+docker pull ghcr.io/echohello-dev/discord-mcp
+docker run --rm -i -e DISCORD_TOKEN=your-bot-token ghcr.io/echohello-dev/discord-mcp
+```
+
+MCP client configs:
+
+```json
+{
+  "mcpServers": {
+    "discord": {
+      "command": "docker",
+      "args": ["run", "--rm", "-i", "-e", "DISCORD_TOKEN=your-bot-token", "ghcr.io/echohello-dev/discord-mcp"]
+    }
+  }
+}
+```
+
+Images are tagged on every `v*.*.*` git tag (see [`.github/workflows/docker.yml`](.github/workflows/docker.yml)).
 
 ## Configure your Discord bot
 

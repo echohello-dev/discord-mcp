@@ -1,0 +1,10 @@
+node_modules
+dist
+tests
+.github
+.git
+.gitignore
+.dockerignore
+*.log
+*.tgz
+.DS_Store
